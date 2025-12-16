@@ -64,7 +64,6 @@ body{
   font-weight: 500;
 }
 
-/* Nav buttons */
 .nav{
   display:flex;
   gap: 18px;
@@ -208,7 +207,7 @@ body{
   background:#f9fafb;
 }
 
-/* Bottom icon buttons (ORCID/LinkedIn/GitHub) */
+/* ===== Icon buttons (FIT INSIDE CIRCLE) ===== */
 .iconRow{
   display:flex;
   justify-content:center;
@@ -222,8 +221,14 @@ body{
   border-radius: 999px;
   border: 1px solid var(--line);
   background:#fff;
-  display:grid;
-  place-items:center;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;      /* prevents icon spilling out */
+  padding: 0;
+
   text-decoration:none;
   color: var(--ink);
   transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
@@ -235,33 +240,31 @@ body{
   transform: translateY(-1px);
 }
 
-/* If you use inline SVG */
-.iconBtn svg{
+.iconImg{
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display:block;
+}
+
+.iconImg.orcid{
+  width: 26px;
+  height: 26px;
+}
+
+/* inline svg github */
+.iconSvg{
   width: 20px;
   height: 20px;
   fill: currentColor;
-}
-
-/* If you use image files (your ORCID/LinkedIn icons) */
-.iconImg{
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  display:block;
 }
 
 /* ===== Right panels ===== */
 .panel{ display:none; min-height: 520px; }
 .panel.active{ display:block; }
 
-.title{
-  font-size: 54px;
-  letter-spacing: -0.03em;
-  margin: 22px 0 10px;
-}
-
 .subtitle{
-  font-size: 22px;
+  font-size: 18px;
   color: var(--muted);
   margin: 0 0 18px;
 }
@@ -349,46 +352,14 @@ iframe{
   background:#fff;
 }
 
-/* ===== Your contact list block (from your snippet) ===== */
-.contactList{
-  list-style:none;
-  margin: 0;
-  padding: 0;
-  display:flex;
-  flex-direction:column;
-  gap: 10px;
-  align-items:center;
-}
-
-.contactItem{
-  display:flex;
-  align-items:center;
-  gap: 12px;
-  color: #000;
-  text-decoration:none;
-  font-size: 22px;
-}
-
-.contactItem svg{
-  width: 26px;
-  height: 26px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* ORCID (for inline SVG version) */
-.contactItem svg.orcid{ stroke:none; fill:#A6CE39; }
-.contactItem svg.orcid text{
-  fill:#fff; font-weight:700; font-size:10px;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+.mutedSmall{
+  color: var(--muted);
+  font-size: 14px;
+  margin: 10px 0 0;
 }
 
 /* ===== Responsive ===== */
 @media (max-width: 980px){
   .wrap{ grid-template-columns: 1fr; }
   .left{ position: static; top:auto; }
-  .title{ font-size: 42px; }
 }
