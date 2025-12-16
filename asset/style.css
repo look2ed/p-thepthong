@@ -363,3 +363,62 @@ iframe{
   .wrap{ grid-template-columns: 1fr; }
   .left{ position: static; top:auto; }
 }
+
+/* Publications rendering */
+.pubList{
+  margin-top: 10px;
+}
+
+.pubItem{
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.pubItem:first-child{
+  border-top: none;
+  padding-top: 0;
+}
+
+.pubTitle{
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 6px;
+}
+
+.pubAuthors, .pubVenue{
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 2px 0;
+}
+
+.pubLinks{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pubLink{
+  display:inline-block;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--chip);
+  text-decoration:none;
+  color: var(--ink);
+  font-size: 13px;
+}
+.pubLink:hover{
+  border-color: rgba(37,99,235,.35);
+  color: var(--accent);
+}
+
+/* Talks */
+.talk{
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.talk:first-of-type{ border-top:none; padding-top:0; }
+.talkTitle{ font-size: 16px; margin: 0 0 6px; }
+.talkMeta{ color: var(--muted); font-size: 14px; margin: 2px 0; }
+

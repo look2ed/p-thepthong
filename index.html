@@ -89,22 +89,35 @@
       </article>
 
       <!-- PUBLICATIONS -->
-      <article id="pubs" class="panel">
-        <div class="box">
-          <h2>Publications</h2>
-          <p class="subtitle">Add your papers, talks, posters here.</p>
+       <article id="pubs" class="panel">
+  <!-- Publications block -->
+  <div class="box">
+    <h2>Publications</h2>
+    <p class="subtitle">Generated from <code>publications.bib</code></p>
 
-          <ul class="list">
-            <li><strong>Paper title</strong> — Authors — Journal/Conference, Year. <a href="#">DOI/ADS</a></li>
-            <li><strong>Paper title</strong> — Authors — Journal/Conference, Year. <a href="#">DOI/ADS</a></li>
-          </ul>
+    <div id="pubList" class="pubList">Loading…</div>
+  </div>
 
-          <h2 style="margin-top:22px;">Talks / Posters</h2>
-          <ul class="list">
-            <li><strong>Title</strong> — Event, Year</li>
-          </ul>
-        </div>
-      </article>
+  <!-- Talks / Posters block (manual for now) -->
+  <div class="box" style="margin-top:16px;">
+    <h2>Talks / Posters</h2>
+    <p class="subtitle">Add your talks/posters here (manual list for now).</p>
+
+    <div class="talk">
+      <div class="talkTitle"><strong>[Year]</strong> Title of talk/poster</div>
+      <div class="talkMeta">Event: Conference / Seminar — City, Country</div>
+      <div class="talkMeta">Type: Talk / Poster / Invited (optional)</div>
+      <div class="pubLinks">
+        <a class="pubLink" href="#" target="_blank" rel="noreferrer">Slides</a>
+        <a class="pubLink" href="#" target="_blank" rel="noreferrer">Poster</a>
+        <a class="pubLink" href="#" target="_blank" rel="noreferrer">Abstract</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+      
 
       <!-- CV -->
       <article id="cv" class="panel">
@@ -140,5 +153,230 @@
     const initial = (location.hash || "#about").slice(1);
     if ([...panels].some(p => p.id === initial)) show(initial, false);
   </script>
+
+  <script>
+  // ---- BibTeX -> HTML (simple, robust-enough for typical .bib files) ----
+  const MY_NAME = "Panisara Thepthong";
+  const BIB_PATH = "publications.bib"; // put file in repo root
+
+  function stripOuterBracesOrQuotes(s){
+    s = (s || "").trim();
+    if ((s.startsWith("{") && s.endsWith("}")) || (s.startsWith('"') && s.endsWith('"'))){
+      return s.slice(1, -1).trim();
+    }
+    return s;
+  }
+
+  function cleanLatex(s){
+    // Minimal cleanup for common BibTeX braces; keeps it safe and readable.
+    return (s || "")
+      .replace(/[{}]/g, "")
+      .replace(/\\&/g, "&")
+      .trim();
+  }
+
+  function parseValue(text, startIndex){
+    // Parses a BibTeX value starting at startIndex.
+    // Supports: { ...balanced... }, " ... ", or bareword until comma/newline.
+    let i = startIndex;
+    while (i < text.length && /\s/.test(text[i])) i++;
+
+    if (text[i] === "{"){
+      let depth = 0;
+      let out = "";
+      while (i < text.length){
+        const ch = text[i++];
+        out += ch;
+        if (ch === "{") depth++;
+        else if (ch === "}"){
+          depth--;
+          if (depth === 0) break;
+        }
+      }
+      return { value: out.trim(), next: i };
+    }
+
+    if (text[i] === '"'){
+      let out = '"';
+      i++;
+      while (i < text.length){
+        const ch = text[i++];
+        out += ch;
+        if (ch === '"' && out[out.length - 2] !== "\\") break;
+      }
+      return { value: out.trim(), next: i };
+    }
+
+    // bare value
+    let out = "";
+    while (i < text.length && text[i] !== "," && text[i] !== "\n" && text[i] !== "\r"){
+      out += text[i++];
+    }
+    return { value: out.trim(), next: i };
+  }
+
+  function parseFields(fieldsText){
+    const fields = {};
+    let i = 0;
+
+    while (i < fieldsText.length){
+      // skip whitespace and commas
+      while (i < fieldsText.length && (/\s/.test(fieldsText[i]) || fieldsText[i] === ",")) i++;
+      if (i >= fieldsText.length) break;
+
+      // read key
+      let key = "";
+      while (i < fieldsText.length && /[A-Za-z0-9_\-]/.test(fieldsText[i])){
+        key += fieldsText[i++];
+      }
+      key = key.toLowerCase().trim();
+
+      // skip spaces and '='
+      while (i < fieldsText.length && /\s/.test(fieldsText[i])) i++;
+      if (fieldsText[i] !== "="){ i++; continue; }
+      i++; // '='
+      while (i < fieldsText.length && /\s/.test(fieldsText[i])) i++;
+
+      // read value
+      const parsed = parseValue(fieldsText, i);
+      i = parsed.next;
+
+      let val = stripOuterBracesOrQuotes(parsed.value);
+      val = cleanLatex(val);
+      if (key) fields[key] = val;
+    }
+
+    return fields;
+  }
+
+  function parseBibtex(text){
+    const entries = [];
+    let i = 0;
+
+    while (true){
+      const at = text.indexOf("@", i);
+      if (at === -1) break;
+      i = at + 1;
+
+      // entry type
+      const m = text.slice(i).match(/^([A-Za-z]+)/);
+      if (!m) break;
+      const type = m[1].toLowerCase();
+      i += m[1].length;
+
+      // find opening brace
+      while (i < text.length && /\s/.test(text[i])) i++;
+      const open = text[i];
+      if (open !== "{") { i++; continue; }
+      i++; // skip '{'
+
+      // key until comma
+      let key = "";
+      while (i < text.length && text[i] !== ","){ key += text[i++]; }
+      key = key.trim();
+      i++; // skip comma
+
+      // fields until matching closing brace
+      let depth = 1;
+      let fieldsText = "";
+      while (i < text.length && depth > 0){
+        const ch = text[i++];
+        if (ch === "{") depth++;
+        if (ch === "}") depth--;
+        if (depth > 0) fieldsText += ch;
+      }
+
+      const fields = parseFields(fieldsText);
+      entries.push({ type, key, fields });
+    }
+
+    return entries;
+  }
+
+  function formatAuthorName(author){
+    // Handles "Last, First" -> "First Last", otherwise keep as-is
+    if (author.includes(",")){
+      const [last, first] = author.split(",").map(s => s.trim());
+      return `${first} ${last}`.trim();
+    }
+    return author.trim();
+  }
+
+  function boldMyName(authorDisplay){
+    // bold if it matches your name strongly
+    const a = authorDisplay.toLowerCase();
+    const hit = a.includes("panisara") && a.includes("thepthong");
+    return hit ? `<strong>${authorDisplay}</strong>` : authorDisplay;
+  }
+
+  function formatAuthors(authorField){
+    // BibTeX: authors separated by ' and '
+    const parts = (authorField || "").split(/\s+and\s+/i).map(s => s.trim()).filter(Boolean);
+    const names = parts.map(formatAuthorName).map(boldMyName);
+    return names.join(", ");
+  }
+
+  function doiLink(doi){
+    if (!doi) return "";
+    const safe = doi.trim();
+    const href = `https://doi.org/${safe}`;
+    return `<a class="pubLink" href="${href}" target="_blank" rel="noreferrer">DOI</a>`;
+  }
+
+  function renderPublications(entries){
+    // Keep only entries that look like publications
+    const pubs = entries.filter(e => e.fields && (e.fields.title && e.fields.author));
+
+    // Sort by year (desc), fallback 0
+    pubs.sort((a,b) => (parseInt(b.fields.year||"0",10) - parseInt(a.fields.year||"0",10)));
+
+    const html = pubs.map(e => {
+      const f = e.fields;
+      const title = f.title || "";
+      const authors = formatAuthors(f.author || "");
+      const venue = f.journal || f.booktitle || f.publisher || "";
+      const year = f.year || "";
+      const doi = f.doi || "";
+
+      const venueLine = [venue, year].filter(Boolean).join(" — ");
+
+      return `
+        <div class="pubItem">
+          <div class="pubTitle">${title}</div>
+          <div class="pubAuthors">${authors}</div>
+          <div class="pubVenue">${venueLine}</div>
+          <div class="pubLinks">
+            ${doiLink(doi)}
+            ${f.url ? `<a class="pubLink" href="${f.url}" target="_blank" rel="noreferrer">Link</a>` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    const el = document.getElementById("pubList");
+    el.innerHTML = html || "<div class='mutedSmall'>No publications found in publications.bib</div>";
+  }
+
+  async function loadBib(){
+    const res = await fetch(BIB_PATH, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Cannot load ${BIB_PATH} (${res.status})`);
+    return await res.text();
+  }
+
+  // Load once on page load
+  (async function(){
+    try{
+      const bibText = await loadBib();
+      const entries = parseBibtex(bibText);
+      renderPublications(entries);
+    }catch(err){
+      const el = document.getElementById("pubList");
+      if (el) el.innerHTML = `<div class="mutedSmall">Error loading publications: ${err.message}</div>`;
+      // NOTE: if you're opening file:// locally, fetch may fail. Use Live Server.
+      console.error(err);
+    }
+  })();
+</script>
+
 </body>
 </html>
