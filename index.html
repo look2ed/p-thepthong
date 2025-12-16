@@ -57,7 +57,7 @@
           <img class="iconImg" src="asset/linkedin-icon.svg" alt="LinkedIn">
         </a>
 
-        <!-- GitHub (inline svg, fits circle) -->
+        <!-- GitHub -->
         <a class="iconBtn" href="https://github.com/look2ed" target="_blank" rel="noreferrer" aria-label="GitHub">
           <svg class="iconSvg" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 .8a11.2 11.2 0 0 0-3.5 21.8c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.3 11.3 0 0 1 6 0C17.8 2.9 18.8 3.2 18.8 3.2c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.3.8 1 .8 2.1V22c0 .3.2.7.8.6A11.2 11.2 0 0 0 12 .8Z"/>
@@ -89,35 +89,35 @@
       </article>
 
       <!-- PUBLICATIONS -->
-       <article id="pubs" class="panel">
-  <!-- Publications block -->
-  <div class="box">
-    <h2>Publications</h2>
-    <p class="subtitle">Generated from <code>publications.bib</code></p>
+      <article id="pubs" class="panel">
+        <!-- Publications block -->
+        <div class="box">
+          <h2>Publications</h2>
+          <p class="subtitle">Generated from <code>publications.bib</code></p>
 
-    <div id="pubList" class="pubList">Loading…</div>
-  </div>
+          <!-- Numbered list -->
+          <ol id="pubList" class="pubList">
+            <li class="pubItem">Loading…</li>
+          </ol>
+        </div>
 
-  <!-- Talks / Posters block (manual for now) -->
-  <div class="box" style="margin-top:16px;">
-    <h2>Talks / Posters</h2>
-    <p class="subtitle">Add your talks/posters here (manual list for now).</p>
+        <!-- Talks / Posters block -->
+        <div class="box" style="margin-top:16px;">
+          <h2>Talks / Posters</h2>
+          <p class="subtitle">Add your talks/posters here (manual list).</p>
 
-    <div class="talk">
-      <div class="talkTitle"><strong>[Year]</strong> Title of talk/poster</div>
-      <div class="talkMeta">Event: Conference / Seminar — City, Country</div>
-      <div class="talkMeta">Type: Talk / Poster / Invited (optional)</div>
-      <div class="pubLinks">
-        <a class="pubLink" href="#" target="_blank" rel="noreferrer">Slides</a>
-        <a class="pubLink" href="#" target="_blank" rel="noreferrer">Poster</a>
-        <a class="pubLink" href="#" target="_blank" rel="noreferrer">Abstract</a>
-      </div>
-    </div>
-  </div>
-</article>
-
-
-      
+          <div class="talk">
+            <div class="talkTitle"><strong>[Year]</strong> Title of talk/poster</div>
+            <div class="talkMeta">Event: Conference / Seminar — City, Country</div>
+            <div class="talkMeta">Type: Talk / Poster / Invited (optional)</div>
+            <div class="pubLinks">
+              <a class="pubLink" href="#" target="_blank" rel="noreferrer">Slides</a>
+              <a class="pubLink" href="#" target="_blank" rel="noreferrer">Poster</a>
+              <a class="pubLink" href="#" target="_blank" rel="noreferrer">Abstract</a>
+            </div>
+          </div>
+        </div>
+      </article>
 
       <!-- CV -->
       <article id="cv" class="panel">
@@ -137,6 +137,7 @@
     </section>
   </main>
 
+  <!-- Tabs (no new pages) -->
   <script>
     const buttons = document.querySelectorAll(".nav button");
     const panels  = document.querySelectorAll(".panel");
@@ -154,229 +155,297 @@
     if ([...panels].some(p => p.id === initial)) show(initial, false);
   </script>
 
+  <!-- BibTeX -> Publications -->
   <script>
-  // ---- BibTeX -> HTML (simple, robust-enough for typical .bib files) ----
-  const MY_NAME = "Panisara Thepthong";
-  const BIB_PATH = "publications.bib"; // put file in repo root
+    const BIB_PATH = "publications.bib";
+    const MY_NAME = "Panisara Thepthong";
 
-  function stripOuterBracesOrQuotes(s){
-    s = (s || "").trim();
-    if ((s.startsWith("{") && s.endsWith("}")) || (s.startsWith('"') && s.endsWith('"'))){
-      return s.slice(1, -1).trim();
+    // Expand common journal macros/abbreviations to full names
+    const JOURNAL_MAP = {
+      apj:   "The Astrophysical Journal",
+      apjl:  "The Astrophysical Journal Letters",
+      apjs:  "The Astrophysical Journal Supplement Series",
+      mnras: "Monthly Notices of the Royal Astronomical Society",
+      grl:   "Geophysical Research Letters",
+      jgr:   "Journal of Geophysical Research",
+      aap:   "Astronomy & Astrophysics",
+      solphys:"Solar Physics",
+      ssw:   "Space Science Reviews"
+    };
+
+    function escapeHtml(s){
+      return (s || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
-    return s;
-  }
 
-  function cleanLatex(s){
-    // Minimal cleanup for common BibTeX braces; keeps it safe and readable.
-    return (s || "")
-      .replace(/[{}]/g, "")
-      .replace(/\\&/g, "&")
-      .trim();
-  }
+    function latexAccentToUnicode(accent, ch){
+      const m = {
+        "'": { a:"á", e:"é", i:"í", o:"ó", u:"ú", y:"ý", A:"Á", E:"É", I:"Í", O:"Ó", U:"Ú", Y:"Ý" },
+        "`": { a:"à", e:"è", i:"ì", o:"ò", u:"ù", A:"À", E:"È", I:"Ì", O:"Ò", U:"Ù" },
+        '"': { a:"ä", e:"ë", i:"ï", o:"ö", u:"ü", y:"ÿ", A:"Ä", E:"Ë", I:"Ï", O:"Ö", U:"Ü" },
+        "^": { a:"â", e:"ê", i:"î", o:"ô", u:"û", A:"Â", E:"Ê", I:"Î", O:"Ô", U:"Û" },
+        "~": { a:"ã", n:"ñ", o:"õ", A:"Ã", N:"Ñ", O:"Õ" },
+        "c": { c:"ç", C:"Ç" }
+      };
+      return (m[accent] && m[accent][ch]) ? m[accent][ch] : ch;
+    }
 
-  function parseValue(text, startIndex){
-    // Parses a BibTeX value starting at startIndex.
-    // Supports: { ...balanced... }, " ... ", or bareword until comma/newline.
-    let i = startIndex;
-    while (i < text.length && /\s/.test(text[i])) i++;
-
-    if (text[i] === "{"){
-      let depth = 0;
-      let out = "";
-      while (i < text.length){
-        const ch = text[i++];
-        out += ch;
-        if (ch === "{") depth++;
-        else if (ch === "}"){
-          depth--;
-          if (depth === 0) break;
-        }
+    function stripOuterBracesOrQuotes(s){
+      s = (s || "").trim();
+      if ((s.startsWith("{") && s.endsWith("}")) || (s.startsWith('"') && s.endsWith('"'))){
+        return s.slice(1, -1).trim();
       }
-      return { value: out.trim(), next: i };
+      return s;
     }
 
-    if (text[i] === '"'){
-      let out = '"';
-      i++;
-      while (i < text.length){
-        const ch = text[i++];
-        out += ch;
-        if (ch === '"' && out[out.length - 2] !== "\\") break;
-      }
-      return { value: out.trim(), next: i };
+    function cleanLatex(s){
+      return (s || "")
+        // accents: {\'e}, \'e, etc.
+        .replace(/\{\\([`'"^~c])\s*\{?([A-Za-z])\}?\}/g, (_, acc, ch) => latexAccentToUnicode(acc, ch))
+        .replace(/\\([`'"^~c])\s*\{?([A-Za-z])\}?/g,       (_, acc, ch) => latexAccentToUnicode(acc, ch))
+
+        // common symbols
+        .replace(/\\&/g, "&")
+        .replace(/\\%/g, "%")
+        .replace(/\\_/g, "_")
+
+        // remove leftover braces but keep backslashes for macros like \apjl
+        .replace(/[{}]/g, "")
+        .trim();
     }
 
-    // bare value
-    let out = "";
-    while (i < text.length && text[i] !== "," && text[i] !== "\n" && text[i] !== "\r"){
-      out += text[i++];
-    }
-    return { value: out.trim(), next: i };
-  }
-
-  function parseFields(fieldsText){
-    const fields = {};
-    let i = 0;
-
-    while (i < fieldsText.length){
-      // skip whitespace and commas
-      while (i < fieldsText.length && (/\s/.test(fieldsText[i]) || fieldsText[i] === ",")) i++;
-      if (i >= fieldsText.length) break;
-
-      // read key
-      let key = "";
-      while (i < fieldsText.length && /[A-Za-z0-9_\-]/.test(fieldsText[i])){
-        key += fieldsText[i++];
-      }
-      key = key.toLowerCase().trim();
-
-      // skip spaces and '='
-      while (i < fieldsText.length && /\s/.test(fieldsText[i])) i++;
-      if (fieldsText[i] !== "="){ i++; continue; }
-      i++; // '='
-      while (i < fieldsText.length && /\s/.test(fieldsText[i])) i++;
-
-      // read value
-      const parsed = parseValue(fieldsText, i);
-      i = parsed.next;
-
-      let val = stripOuterBracesOrQuotes(parsed.value);
-      val = cleanLatex(val);
-      if (key) fields[key] = val;
-    }
-
-    return fields;
-  }
-
-  function parseBibtex(text){
-    const entries = [];
-    let i = 0;
-
-    while (true){
-      const at = text.indexOf("@", i);
-      if (at === -1) break;
-      i = at + 1;
-
-      // entry type
-      const m = text.slice(i).match(/^([A-Za-z]+)/);
-      if (!m) break;
-      const type = m[1].toLowerCase();
-      i += m[1].length;
-
-      // find opening brace
+    function parseValue(text, startIndex){
+      let i = startIndex;
       while (i < text.length && /\s/.test(text[i])) i++;
-      const open = text[i];
-      if (open !== "{") { i++; continue; }
-      i++; // skip '{'
 
-      // key until comma
-      let key = "";
-      while (i < text.length && text[i] !== ","){ key += text[i++]; }
-      key = key.trim();
-      i++; // skip comma
-
-      // fields until matching closing brace
-      let depth = 1;
-      let fieldsText = "";
-      while (i < text.length && depth > 0){
-        const ch = text[i++];
-        if (ch === "{") depth++;
-        if (ch === "}") depth--;
-        if (depth > 0) fieldsText += ch;
+      if (text[i] === "{"){
+        let depth = 0, out = "";
+        while (i < text.length){
+          const ch = text[i++];
+          out += ch;
+          if (ch === "{") depth++;
+          else if (ch === "}"){
+            depth--;
+            if (depth === 0) break;
+          }
+        }
+        return { value: out.trim(), next: i };
       }
 
-      const fields = parseFields(fieldsText);
-      entries.push({ type, key, fields });
+      if (text[i] === '"'){
+        let out = '"'; i++;
+        while (i < text.length){
+          const ch = text[i++];
+          out += ch;
+          if (ch === '"' && out[out.length - 2] !== "\\") break;
+        }
+        return { value: out.trim(), next: i };
+      }
+
+      let out = "";
+      while (i < text.length && text[i] !== "," && text[i] !== "\n" && text[i] !== "\r"){
+        out += text[i++];
+      }
+      return { value: out.trim(), next: i };
     }
 
-    return entries;
-  }
+    function parseFields(fieldsText){
+      const fields = {};
+      let i = 0;
 
-  function formatAuthorName(author){
-    // Handles "Last, First" -> "First Last", otherwise keep as-is
-    if (author.includes(",")){
-      const [last, first] = author.split(",").map(s => s.trim());
-      return `${first} ${last}`.trim();
+      while (i < fieldsText.length){
+        while (i < fieldsText.length && (/\s/.test(fieldsText[i]) || fieldsText[i] === ",")) i++;
+        if (i >= fieldsText.length) break;
+
+        let key = "";
+        while (i < fieldsText.length && /[A-Za-z0-9_\-]/.test(fieldsText[i])) key += fieldsText[i++];
+        key = key.toLowerCase().trim();
+
+        while (i < fieldsText.length && /\s/.test(fieldsText[i])) i++;
+        if (fieldsText[i] !== "="){ i++; continue; }
+        i++;
+        while (i < fieldsText.length && /\s/.test(fieldsText[i])) i++;
+
+        const parsed = parseValue(fieldsText, i);
+        i = parsed.next;
+
+        let val = stripOuterBracesOrQuotes(parsed.value);
+        val = cleanLatex(val);
+        if (key) fields[key] = val;
+      }
+      return fields;
     }
-    return author.trim();
-  }
 
-  function boldMyName(authorDisplay){
-    // bold if it matches your name strongly
-    const a = authorDisplay.toLowerCase();
-    const hit = a.includes("panisara") && a.includes("thepthong");
-    return hit ? `<strong>${authorDisplay}</strong>` : authorDisplay;
-  }
+    function parseBibtex(text){
+      const entries = [];
+      let i = 0;
 
-  function formatAuthors(authorField){
-    // BibTeX: authors separated by ' and '
-    const parts = (authorField || "").split(/\s+and\s+/i).map(s => s.trim()).filter(Boolean);
-    const names = parts.map(formatAuthorName).map(boldMyName);
-    return names.join(", ");
-  }
+      while (true){
+        const at = text.indexOf("@", i);
+        if (at === -1) break;
+        i = at + 1;
 
-  function doiLink(doi){
-    if (!doi) return "";
-    const safe = doi.trim();
-    const href = `https://doi.org/${safe}`;
-    return `<a class="pubLink" href="${href}" target="_blank" rel="noreferrer">DOI</a>`;
-  }
+        const m = text.slice(i).match(/^([A-Za-z]+)/);
+        if (!m) break;
+        const type = m[1].toLowerCase();
+        i += m[1].length;
 
-  function renderPublications(entries){
-    // Keep only entries that look like publications
-    const pubs = entries.filter(e => e.fields && (e.fields.title && e.fields.author));
+        while (i < text.length && /\s/.test(text[i])) i++;
+        if (text[i] !== "{"){ i++; continue; }
+        i++;
 
-    // Sort by year (desc), fallback 0
-    pubs.sort((a,b) => (parseInt(b.fields.year||"0",10) - parseInt(a.fields.year||"0",10)));
+        let key = "";
+        while (i < text.length && text[i] !== ",") key += text[i++];
+        key = key.trim();
+        i++;
 
-    const html = pubs.map(e => {
-      const f = e.fields;
-      const title = f.title || "";
-      const authors = formatAuthors(f.author || "");
-      const venue = f.journal || f.booktitle || f.publisher || "";
+        let depth = 1;
+        let fieldsText = "";
+        while (i < text.length && depth > 0){
+          const ch = text[i++];
+          if (ch === "{") depth++;
+          if (ch === "}") depth--;
+          if (depth > 0) fieldsText += ch;
+        }
+
+        entries.push({ type, key, fields: parseFields(fieldsText) });
+      }
+      return entries;
+    }
+
+    function formatAuthorName(author){
+      // Handles "Last, First" -> "First Last"
+      if (author.includes(",")){
+        const [last, first] = author.split(",").map(s => s.trim());
+        return `${first} ${last}`.trim();
+      }
+      return author.trim();
+    }
+
+    function boldMyName(authorDisplay){
+      const a = authorDisplay.toLowerCase();
+      const hit = a.includes("panisara") && a.includes("thepthong");
+      return hit ? `<strong>${escapeHtml(authorDisplay)}</strong>` : escapeHtml(authorDisplay);
+    }
+
+    function formatAuthors(authorField){
+      const parts = (authorField || "")
+        .split(/\s+and\s+/i)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const names = parts.map(formatAuthorName).map(boldMyName);
+      return names.join(", ");
+    }
+
+    function normalizeJournalName(j){
+      if (!j) return "";
+      const raw = j.trim();
+
+      // macros like \apjl
+      if (raw.startsWith("\\")){
+        const key = raw.replace(/^\\+/, "").replace(/[^A-Za-z]/g, "").toLowerCase();
+        return JOURNAL_MAP[key] || raw.replace(/^\\+/, "");
+      }
+
+      // short abbreviations like "MNRAS"
+      if (!raw.includes(" ")){
+        const key = raw.replace(/[^A-Za-z]/g, "").toLowerCase();
+        return JOURNAL_MAP[key] || raw;
+      }
+
+      return raw;
+    }
+
+    function makeVenueLine(f){
       const year = f.year || "";
-      const doi = f.doi || "";
+      const journal = normalizeJournalName(f.journal || f.journaltitle || "");
+      const booktitle = f.booktitle || "";
 
-      const venueLine = [venue, year].filter(Boolean).join(" — ");
+      const volume = f.volume || "";
+      const number = f.number || f.issue || "";
+      const pages  = f.pages || f.page || "";
+      const eid    = f.eid || "";
 
-      return `
-        <div class="pubItem">
-          <div class="pubTitle">${title}</div>
-          <div class="pubAuthors">${authors}</div>
-          <div class="pubVenue">${venueLine}</div>
-          <div class="pubLinks">
-            ${doiLink(doi)}
-            ${f.url ? `<a class="pubLink" href="${f.url}" target="_blank" rel="noreferrer">Link</a>` : ""}
-          </div>
-        </div>
-      `;
-    }).join("");
+      let venue = journal || booktitle || f.publisher || f.organization || "";
 
-    const el = document.getElementById("pubList");
-    el.innerHTML = html || "<div class='mutedSmall'>No publications found in publications.bib</div>";
-  }
+      // detail: 977(1), L19   OR  977, L19
+      let detail = "";
+      if (volume) detail += `${volume}`;
+      if (number) detail += `${detail ? "" : ""}(${number})`;
 
-  async function loadBib(){
-    const res = await fetch(BIB_PATH, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Cannot load ${BIB_PATH} (${res.status})`);
-    return await res.text();
-  }
+      const pageLike = pages || eid;
+      if (pageLike) detail += `${detail ? ", " : ""}${pageLike}`;
 
-  // Load once on page load
-  (async function(){
-    try{
-      const bibText = await loadBib();
-      const entries = parseBibtex(bibText);
-      renderPublications(entries);
-    }catch(err){
-      const el = document.getElementById("pubList");
-      if (el) el.innerHTML = `<div class="mutedSmall">Error loading publications: ${err.message}</div>`;
-      // NOTE: if you're opening file:// locally, fetch may fail. Use Live Server.
-      console.error(err);
+      let left = venue;
+      if (detail) left = left ? `${left}, ${detail}` : detail;
+
+      return [left, year ? `(${year})` : ""].filter(Boolean).join(" ");
     }
-  })();
-</script>
 
+    function doiAnchor(doi){
+      if (!doi) return "";
+      const d = doi.trim().replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
+      const href = `https://doi.org/${encodeURIComponent(d)}`;
+      return `<a class="pubLink" href="${href}" target="_blank" rel="noreferrer">${escapeHtml(d)}</a>`;
+    }
+
+    function renderPublications(entries){
+      const pubs = entries.filter(e => e.fields && e.fields.title && e.fields.author);
+
+      // Sort by year desc, then title
+      pubs.sort((a,b) => {
+        const ya = parseInt(a.fields.year || "0", 10);
+        const yb = parseInt(b.fields.year || "0", 10);
+        if (yb !== ya) return yb - ya;
+        return (a.fields.title || "").localeCompare(b.fields.title || "");
+      });
+
+      const html = pubs.map(e => {
+        const f = e.fields;
+
+        const title = cleanLatex(f.title || "");
+        const authors = formatAuthors(f.author || "");
+        const venueLine = escapeHtml(makeVenueLine(f));
+        const doi = doiAnchor(f.doi || "");
+
+        return `
+          <li class="pubItem">
+            <div class="pubTitle"><strong>${escapeHtml(title)}</strong></div>
+            <div class="pubAuthors">${authors}</div>
+            <div class="pubVenue">${venueLine}</div>
+            <div class="pubLinks">
+              ${doi}
+            </div>
+          </li>
+        `;
+      }).join("");
+
+      const el = document.getElementById("pubList");
+      el.innerHTML = html || `<li class="pubItem">No publications found in publications.bib</li>`;
+    }
+
+    async function loadBib(){
+      const res = await fetch(BIB_PATH, { cache: "no-store" });
+      if (!res.ok) throw new Error(`Cannot load ${BIB_PATH} (${res.status})`);
+      return await res.text();
+    }
+
+    (async function(){
+      try{
+        const bibText = await loadBib();
+        const entries = parseBibtex(bibText);
+        renderPublications(entries);
+      }catch(err){
+        const el = document.getElementById("pubList");
+        if (el) el.innerHTML = `<li class="pubItem">Error loading publications: ${escapeHtml(err.message)}</li>`;
+        console.error(err);
+      }
+    })();
+  </script>
 </body>
 </html>
