@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Name — CV</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="wrap">
+    <h1>Your Name</h1>
+    <p class="muted">Your role • City, Country</p>
+    <p>
+      <a href="mailto:you@email.com">you@email.com</a> ·
+      <a href="https://github.com/yourusername">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/yourhandle">LinkedIn</a>
+    </p>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>Summary</h2>
+      <p>Write 2–4 lines about your interests and what you do.</p>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <ul>
+        <li><strong>Degree</strong>, University — Year</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+      <ul>
+        <li><strong>Role</strong>, Organization — Year–Year<br/>One impact bullet.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <ul>
+        <li><a href="#">Project name</a> — one-line description.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="wrap muted">
+    Last updated: <span id="d"></span>
+  </footer>
+
+  <script>
+    document.getElementById("d").textContent = new Date().toISOString().slice(0,10);
+  </script>
+</body>
+</html>
