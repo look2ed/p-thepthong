@@ -1,7 +1,217 @@
-body { font-family: system-ui, Arial, sans-serif; margin: 0; line-height: 1.6; }
-.wrap { max-width: 900px; margin: 0 auto; padding: 24px; }
-h1 { margin-bottom: 6px; }
-h2 { margin-top: 28px; }
-a { text-decoration: none; }
-a:hover { text-decoration: underline; }
-.muted { color: #666; }
+:root{
+  --bg:#0b0f19;
+  --panel:#111827;
+  --panel2:#0f172a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --border:#24324a;
+  --tab:#0f172a;
+  --tabActive:#111827;
+  --link:#60a5fa;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --radius: 18px;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 600px at 10% 10%, #172554 0%, transparent 60%),
+              radial-gradient(1000px 600px at 90% 30%, #4c1d95 0%, transparent 55%),
+              var(--bg);
+  color:var(--text);
+}
+
+a{ color:var(--link); text-decoration:none; }
+a:hover{ text-decoration:underline; }
+
+.wrap{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.tabs{
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+  margin-bottom: 10px;
+}
+
+.tab{
+  display:inline-block;
+  padding: 10px 14px;
+  background: var(--tab);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  color: var(--muted);
+  box-shadow: var(--shadow);
+}
+
+.tab.active{
+  background: var(--tabActive);
+  color: var(--text);
+  position: relative;
+  top: 1px;
+}
+
+.shell{
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(17,24,39,.95), rgba(15,23,42,.9));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+
+.content{
+  display:grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  padding: 18px;
+}
+
+.sidebar{
+  background: rgba(15,23,42,.7);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.profile{
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+}
+
+.avatar{
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.name{
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitle{
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.contact{
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+
+.contact h3{
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.contact ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.pill{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(17,24,39,.55);
+}
+
+.pill span{
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.main{
+  background: rgba(17,24,39,.55);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.section{
+  padding: 12px 0;
+  border-top: 1px dashed var(--border);
+}
+.section:first-child{ border-top:none; padding-top:0; }
+
+.section h2{
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.section p, .section li{
+  color: var(--text);
+  opacity: .95;
+}
+
+.muted{ color: var(--muted); }
+
+.pub{
+  padding: 12px 0;
+  border-top: 1px dashed var(--border);
+}
+.pub:first-child{ border-top:none; padding-top:0; }
+
+.pub .meta{ color: var(--muted); font-size: 13px; }
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top: 8px;
+}
+.badge{
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(15,23,42,.55);
+}
+
+.iframeWrap{
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow:hidden;
+  background: rgba(15,23,42,.65);
+}
+iframe{
+  width: 100%;
+  height: min(75vh, 900px);
+  border:0;
+  display:block;
+}
+
+footer{
+  padding: 14px 18px 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 900px){
+  .content{ grid-template-columns: 1fr; }
+}

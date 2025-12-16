@@ -3,54 +3,97 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your Name — CV</title>
+  <title>Panisara Thepthong — Home</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  <header class="wrap">
-    <h1>Your Name</h1>
-    <p class="muted">Your role • City, Country</p>
-    <p>
-      <a href="mailto:you@email.com">you@email.com</a> ·
-      <a href="https://github.com/yourusername">GitHub</a> ·
-      <a href="https://www.linkedin.com/in/yourhandle">LinkedIn</a>
-    </p>
-  </header>
+  <div class="wrap">
+    <nav class="tabs">
+      <a class="tab active" href="index.html">About</a>
+      <a class="tab" href="publications.html">Publications</a>
+      <a class="tab" href="cv.html">CV</a>
+    </nav>
 
-  <main class="wrap">
-    <section>
-      <h2>Summary</h2>
-      <p>Write 2–4 lines about your interests and what you do.</p>
-    </section>
+    <div class="shell">
+      <div class="content">
+        <!-- Left: photo + contacts -->
+        <aside class="sidebar">
+          <div class="profile">
+            <img class="avatar" src="assets/profile.jpg" alt="Profile photo" />
+            <div>
+              <h1 class="name">Panisara Thepthong</h1>
+              <p class="subtitle">Heliophysics / Solar Radio • (Your City, Country)</p>
+              <p class="subtitle muted">Add one short tagline you like.</p>
+            </div>
 
-    <section>
-      <h2>Education</h2>
-      <ul>
-        <li><strong>Degree</strong>, University — Year</li>
-      </ul>
-    </section>
+            <div class="contact">
+              <h3>Contacts</h3>
+              <ul>
+                <li class="pill">
+                  <span>Email</span>
+                  <a href="mailto:your.email@example.com">your.email@example.com</a>
+                </li>
+                <li class="pill">
+                  <span>ORCID</span>
+                  <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noreferrer">0000-0000-0000-0000</a>
+                </li>
+                <li class="pill">
+                  <span>LinkedIn</span>
+                  <a href="https://www.linkedin.com/in/your-handle/" target="_blank" rel="noreferrer">your-handle</a>
+                </li>
+                <li class="pill">
+                  <span>GitHub</span>
+                  <a href="https://github.com/look2ed" target="_blank" rel="noreferrer">look2ed</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
 
-    <section>
-      <h2>Experience</h2>
-      <ul>
-        <li><strong>Role</strong>, Organization — Year–Year<br/>One impact bullet.</li>
-      </ul>
-    </section>
+        <!-- Right: info -->
+        <main class="main">
+          <section class="section">
+            <h2>Personal Information</h2>
+            <p>
+              Write 3–6 lines about who you are (current position, background, what you do).
+              Keep it friendly and clear.
+            </p>
+            <div class="badges">
+              <div class="badge">Solar radio bursts</div>
+              <div class="badge">Parker Solar Probe</div>
+              <div class="badge">Solar Orbiter</div>
+              <div class="badge">Python • SunPy</div>
+            </div>
+          </section>
 
-    <section>
-      <h2>Projects</h2>
-      <ul>
-        <li><a href="#">Project name</a> — one-line description.</li>
-      </ul>
-    </section>
-  </main>
+          <section class="section">
+            <h2>Research Interests</h2>
+            <ul>
+              <li>Type III radio bursts: detection, fitting, and cross-spacecraft comparison</li>
+              <li>Fluctuation analysis and smoothing methods</li>
+              <li>Spacecraft connectivity / Parker spiral context</li>
+            </ul>
+          </section>
 
-  <footer class="wrap muted">
-    Last updated: <span id="d"></span>
-  </footer>
+          <section class="section">
+            <h2>Life & Lifestyle</h2>
+            <p class="muted">Optional — a few lines only.</p>
+            <ul>
+              <li>Things you enjoy (e.g., travel, writing, games, photography)</li>
+              <li>Anything you’re comfortable sharing publicly</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+
+      <footer>
+        Last updated: <span id="lu"></span>
+      </footer>
+    </div>
+  </div>
 
   <script>
-    document.getElementById("d").textContent = new Date().toISOString().slice(0,10);
+    document.getElementById("lu").textContent = new Date().toISOString().slice(0,10);
   </script>
 </body>
 </html>
