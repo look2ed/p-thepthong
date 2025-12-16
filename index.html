@@ -3,427 +3,473 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Panisara Thepthong — Personal Page</title>
+  <title>Panisara Thepthong — PhD Student</title>
 
   <style>
     :root{
-      --blue-1:#a9c0ea;     /* header light */
-      --blue-2:#4a78c6;     /* tab blue */
-      --blue-3:#8eaadd;     /* left panel */
-      --blue-4:#3f6dbb;     /* active tab */
-      --border:#233a63;
-      --ink:#0b1220;
-      --paper:#ffffff;
+      --bg:#ffffff;
+      --ink:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --accent:#2563eb;
+      --chip:#f3f4f6;
+      --card:#f5efe9;
+      --shadow: 0 18px 40px rgba(0,0,0,.12);
+      --shadow2: 0 10px 24px rgba(0,0,0,.10);
     }
 
     *{ box-sizing:border-box; }
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--ink);
-      background: #d7e2f6;
+      color:var(--ink);
+      background:var(--bg);
     }
 
-    /* Layout */
-    .layout{
-      display:grid;
-      grid-template-columns: 420px 1fr;
-      min-height: 100vh;
-      border: 2px solid rgba(0,0,0,.15);
-    }
-
-    /* Left panel (always visible) */
-    .left{
-      background: var(--blue-3);
-      border-right: 2px solid rgba(0,0,0,.25);
+    /* Top bar */
+    .topbar{
       position: sticky;
       top: 0;
-      height: 100vh;
-      display:flex;
-      flex-direction:column;
+      z-index: 50;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
     }
-
-    .photoBox{
-      background: var(--blue-2);
-      color: #fff;
-      height: 220px;
-      border-bottom: 2px solid rgba(0,0,0,.25);
+    .topbar-inner{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 18px;
       display:flex;
       align-items:center;
-      justify-content:center;
-      padding: 16px;
+      justify-content:space-between;
+      gap: 16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 240px;
+      white-space: nowrap;
+    }
+    .sq{
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    .brand b{
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+    .brand span{
+      color: var(--muted);
+      font-weight: 500;
     }
 
-    .photoBox img{
+    .nav{
+      display:flex;
+      gap: 18px;
+      align-items:center;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+    .nav button{
+      appearance:none;
+      border:none;
+      background:transparent;
+      font: inherit;
+      color: var(--ink);
+      padding: 8px 10px;
+      cursor:pointer;
+      border-radius: 999px;
+    }
+    .nav button.active{
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .nav button:hover{
+      background: #f8fafc;
+    }
+
+    /* Main layout */
+    .wrap{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+      display:grid;
+      grid-template-columns: 380px 1fr;
+      gap: 34px;
+      align-items:start;
+    }
+
+    /* Left column stays visible */
+    .left{
+      position: sticky;
+      top: 86px; /* below top bar */
+      align-self: start;
+    }
+
+    /* Card stack look */
+    .stack{
+      position: relative;
+      width: 100%;
+      padding-top: 18px;
+    }
+    .stack::before{
+      content:"";
+      position:absolute;
+      top: 12px;
+      left: 12px;
+      width: 100%;
+      height: 100%;
+      background: #e9ddd3;
+      border-radius: 14px;
+      box-shadow: var(--shadow2);
+      z-index: 0;
+    }
+
+    .card{
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 26px 22px 18px;
+      text-align:center;
+    }
+
+    .avatar{
       width: 170px;
       height: 170px;
-      border-radius: 16px;
+      border-radius: 999px;
       object-fit: cover;
-      border: 2px solid rgba(255,255,255,.65);
-      background: rgba(255,255,255,.25);
-    }
-
-    .leftInner{
-      padding: 18px 18px 22px;
-      overflow:auto;
+      background:#ddd;
+      display:block;
+      margin: 0 auto 14px;
+      border: 6px solid rgba(255,255,255,.55);
     }
 
     .name{
-      margin: 6px 0 4px;
-      font-size: 34px;
-      line-height: 1.05;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-    }
-    .tagline{
-      margin: 0 0 18px;
-      font-size: 18px;
-      opacity: .95;
-    }
-
-    /* Contacts with icons */
-    .contactsTitle{
-      margin: 24px 0 10px;
-      text-align:center;
-      font-size: 26px;
-      font-weight: 800;
-    }
-
-    .contactList{
-      list-style: none;
-      padding: 0;
       margin: 0;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      align-items:flex-start;
+      font-size: 32px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
 
-    .contactItem{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      font-size: 18px;
+    .role{
+      margin: 10px 0 0;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .divider{
+      width: 56px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 999px;
+      margin: 12px auto 12px;
+      opacity: .9;
+    }
+
+    /* Emails under card */
+    .emails{
+      margin-top: 14px;
+      padding: 14px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .emails h3{
+      margin: 0 0 10px;
+      font-size: 14px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .emails a{
+      display:block;
       color: var(--ink);
       text-decoration: none;
       padding: 8px 10px;
-      border-radius: 12px;
-      width: 100%;
-      background: rgba(255,255,255,.25);
-      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 10px;
+      border: 1px solid transparent;
+      overflow-wrap:anywhere;
+    }
+    .emails a:hover{
+      border-color: var(--line);
+      background:#f9fafb;
     }
 
-    .contactItem:hover{
-      background: rgba(255,255,255,.38);
-      border-color: rgba(0,0,0,.18);
-    }
-
-    .contactItem svg{
-      width: 22px;
-      height: 22px;
-      flex: 0 0 auto;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .orcidIcon{
-      stroke: none !important;
-      fill: #A6CE39 !important;
-    }
-    .orcidIcon text{
-      fill: #fff;
-      font-weight: 800;
-      font-size: 10px;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    }
-
-    /* Right panel */
-    .right{
-      background: var(--paper);
+    /* Icon row */
+    .iconRow{
       display:flex;
-      flex-direction:column;
+      justify-content:center;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .iconBtn{
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background:#fff;
+      display:grid;
+      place-items:center;
+      text-decoration:none;
+      color: var(--ink);
+    }
+    .iconBtn:hover{
+      border-color: rgba(37,99,235,.35);
+      box-shadow: 0 8px 18px rgba(37,99,235,.12);
+      transform: translateY(-1px);
+    }
+    .iconBtn svg{
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
     }
 
-    .topHeader{
-      background: var(--blue-1);
-      border-bottom: 2px solid rgba(0,0,0,.25);
-      padding: 18px 20px;
-    }
-
-    .topHeader h1{
-      margin: 0;
-      font-size: 36px;
-      letter-spacing: -0.01em;
-    }
-
-    .tabs{
-      background: var(--blue-1);
-      padding: 0 20px;
-      border-bottom: 2px solid rgba(0,0,0,.25);
-    }
-
-    .tabRow{
-      display:flex;
-      gap: 8px;
-      align-items:flex-end;
-      height: 48px;
-    }
-
-    .tabBtn{
-      appearance:none;
-      border: 2px solid var(--border);
-      border-bottom: none;
-      background: var(--blue-2);
-      color: #fff;
-      padding: 10px 18px;
-      font-size: 18px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      cursor:pointer;
-    }
-
-    .tabBtn.active{
-      background: var(--blue-4);
-      position: relative;
-      top: 2px; /* looks like folder tab sitting on paper */
-    }
-
-    .content{
-      padding: 22px 26px 34px;
-    }
-
+    /* Right content */
     .panel{
       display:none;
-      max-width: 980px;
+      min-height: 520px;
     }
     .panel.active{ display:block; }
 
-    .sectionTitle{
-      font-size: 34px;
-      margin: 0 0 10px;
-      font-weight: 900;
+    .title{
+      font-size: 54px;
+      letter-spacing: -0.03em;
+      margin: 22px 0 10px;
+    }
+    .subtitle{
+      font-size: 22px;
+      color: var(--muted);
+      margin: 0 0 18px;
     }
 
-    .subTitle{
+    .box{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px 20px;
+      background: #fff;
+    }
+
+    .box h2{
       font-size: 24px;
-      margin: 26px 0 10px;
-      font-weight: 900;
+      margin: 0 0 10px;
+      letter-spacing: -0.01em;
     }
 
-    .pillRow{
-      margin-top: 10px;
-      display:flex;
-      flex-wrap:wrap;
-      gap: 10px;
+    .box p{
+      margin: 0 0 16px;
+      line-height: 1.7;
+      font-size: 16px;
     }
-    .pill{
-      display:inline-block;
-      padding: 7px 12px;
-      border: 1px solid rgba(0,0,0,.2);
+
+    .chips{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .chip{
+      background: var(--chip);
+      border: 1px solid var(--line);
+      padding: 8px 12px;
       border-radius: 999px;
-      background: #f3f6ff;
       font-size: 14px;
     }
 
-    .muted{ opacity: .7; }
+    .list{
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+    .list li{
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    .cvActions{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 12px 0 14px;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid var(--line);
+      background:#fff;
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration:none;
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+      cursor:pointer;
+      font-weight: 600;
+    }
+    .btn.primary{
+      background: var(--accent);
+      border-color: var(--accent);
+      color:#fff;
+    }
+    .btn:hover{ filter: brightness(0.98); }
 
     iframe{
       width: 100%;
-      height: 78vh;
-      border: 1px solid rgba(0,0,0,.2);
-      border-radius: 10px;
+      height: min(78vh, 980px);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background:#fff;
     }
 
-    /* Mobile */
+    /* Responsive */
     @media (max-width: 980px){
-      .layout{ grid-template-columns: 1fr; }
-      .left{
-        position: static;
-        height: auto;
-        border-right: none;
-        border-bottom: 2px solid rgba(0,0,0,.25);
-      }
+      .wrap{ grid-template-columns: 1fr; }
+      .left{ position: static; top:auto; }
+      .title{ font-size: 42px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="layout">
-
-    <!-- LEFT (always visible) -->
-    <aside class="left">
-      <div class="photoBox">
-        <!-- Put your image at: asset/profile.jpg -->
-        <img src="asset/profile.jpg" alt="Profile photo of Panisara Thepthong" />
-      </div>
-
-      <div class="leftInner">
-
-        <div class="contactsTitle">Contacts</div>
-        <ul class="contactList">
-          <li>
-            <a class="contactItem" href="mailto:panisara.thepthong@cnrs-orleans.fr" title="panisara.thepthong@cnrs-orleans.fr">
-              <!-- Mail -->
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-              <span>panisara.thepthong@cnrs-orleans.fr</span>
-            </a>
-          </li>
-
-          <li>
-            <a class="contactItem" href="mailto:panisara.thepthong@gmail.com" title="panisara.thepthong@gmail.com">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-              <span>panisara.thepthong@gmail.com</span>
-            </a>
-          </li>
-
-          <li>
-            <a class="contactItem" href="https://orcid.org/0000-0001-9597-1448" target="_blank" rel="noreferrer" title="ORCID 0000-0001-9597-1448">
-              <!-- ORCID (simple) -->
-              <svg class="orcidIcon" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"></circle>
-                <text x="12" y="16" text-anchor="middle">iD</text>
-              </svg>
-              <span>0000-0001-9597-1448</span>
-            </a>
-          </li>
-
-          <li>
-            <a class="contactItem" href="https://www.linkedin.com/in/panisara-thepthong-930a30258/" target="_blank" rel="noreferrer" title="LinkedIn">
-              <!-- LinkedIn -->
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4V9h4v2"></path>
-                <rect x="2" y="9" width="4" height="12"></rect>
-                <circle cx="4" cy="4" r="2"></circle>
-              </svg>
-              <span>LinkedIn</span>
-            </a>
-          </li>
-
-          <li>
-            <a class="contactItem" href="https://github.com/look2ed" target="_blank" rel="noreferrer" title="GitHub look2ed">
-              <!-- GitHub (simple) -->
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
-                <path d="M15 22v-4a4 4 0 0 0-1-3c3-.3 6-1.5 6-7a5 5 0 0 0-1.5-3.5A5 5 0 0 0 18 1s-1.2-.3-4 1.5a13 13 0 0 0-4 0C7.2.7 6 1 6 1a5 5 0 0 0-.5 3A5 5 0 0 0 4 7.5c0 5.5 3 6.7 6 7a4 4 0 0 0-1 3v4"></path>
-              </svg>
-              <span>GitHub</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </aside>
-
-    <!-- RIGHT (only this changes by tab) -->
-    <section class="right">
-      <header class="topHeader">
-        <h1>PANISARA THEPTHONG (LOOK2ED)</h1>
-      </header>
-
-      <div class="tabs">
-        <div class="tabRow">
-          <button class="tabBtn active" data-tab="about">Personal Profile</button>
-          <button class="tabBtn" data-tab="pubs">Publications</button>
-          <button class="tabBtn" data-tab="cv">CV</button>
+  <!-- TOP NAV -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="sq"></div>
+        <div>
+          <b>Panisara Thepthong</b>
+          <span> / PhD Student</span>
         </div>
       </div>
 
-      <main class="content">
-        <!-- TAB 1 -->
-        <article id="about" class="panel active">
-          <h2 class="sectionTitle">Personal Information</h2>
+      <nav class="nav" aria-label="Site navigation">
+        <button class="active" data-tab="about">ABOUT ME</button>
+        <button data-tab="pubs">PUBLICATIONS</button>
+        <button data-tab="cv">CV</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- LEFT: CARD + EMAILS + ICONS (always visible) -->
+    <aside class="left">
+      <div class="stack">
+        <div class="card">
+          <img class="avatar" src="asset/profile.jpg" alt="Profile photo" />
+          <h1 class="name">Panisara<br/>Thepthong</h1>
+          <div class="divider"></div>
+          <div class="role">PhD Student</div>
+        </div>
+      </div>
+
+      <div class="emails" aria-label="Emails">
+        <h3>Email</h3>
+        <a href="mailto:panisara.thepthong@cnrs-orleans.fr">panisara.thepthong@cnrs-orleans.fr</a>
+        <a href="mailto:panisara.thepthong@gmail.com">panisara.thepthong@gmail.com</a>
+      </div>
+
+      <div class="iconRow" aria-label="Links">
+        <!-- ORCID -->
+        <a class="iconBtn" href="https://orcid.org/0000-0001-9597-1448" target="_blank" rel="noreferrer" aria-label="ORCID">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm-1.1 5.4h1.8v9.2h-1.8V7.4Zm4.8 0h1.6c1.7 0 3 1.4 3 3.2 0 1.8-1.3 3.2-3 3.2h-1.6V7.4Zm1.6 1.6v3.2h.2c.7 0 1.2-.7 1.2-1.6S18.2 9 17.5 9h-.2Z"/>
+          </svg>
+        </a>
+
+        <!-- LinkedIn -->
+        <a class="iconBtn" href="https://www.linkedin.com/in/panisara-thepthong-930a30258/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.94 6.5a2.19 2.19 0 1 1 0-4.38 2.19 2.19 0 0 1 0 4.38ZM3.7 21.5h6.5V8.6H3.7v12.9ZM13 8.6h6.2v1.8h.1c.9-1.5 2.3-2.2 4.2-2.2 4.5 0 5.3 3 5.3 6.8v6.5h-6.5v-5.7c0-1.4 0-3.1-1.9-3.1s-2.2 1.5-2.2 3v5.8H13V8.6Z"/>
+          </svg>
+        </a>
+
+        <!-- GitHub -->
+        <a class="iconBtn" href="https://github.com/look2ed" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 .8a11.2 11.2 0 0 0-3.5 21.8c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.3 11.3 0 0 1 6 0C17.8 2.9 18.8 3.2 18.8 3.2c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.3.8 1 .8 2.1V22c0 .3.2.7.8.6A11.2 11.2 0 0 0 12 .8Z"/>
+          </svg>
+        </a>
+      </div>
+    </aside>
+
+    <!-- RIGHT: PANELS -->
+    <section>
+      <!-- ABOUT -->
+      <article id="about" class="panel active">
+        <div class="box">
+          <h2>About Me</h2>
           <p>
-            Write 3–6 lines about who you are (current position, background, what you do).
-            Keep it friendly and clear.
+            I am a PhD student in Space Physics at LPC2E, focusing on solar wind data analysis using spacecraft measurements.
+            My research interests center on solar phenomena that drive and modulate interplanetary space weather, investigated
+            through a combination of in-situ and remote-sensing observations. I am currently working on Type III radio-burst
+            analysis using data from Parker Solar Probe (PSP) and Solar Orbiter (SolO). I am skilled in scientific data analysis,
+            in-situ measurements, and quantitative research.
           </p>
 
-          <div class="pillRow">
-            <span class="pill">Solar radio bursts</span>
-            <span class="pill">Parker Solar Probe</span>
-            <span class="pill">Solar Orbiter</span>
-            <span class="pill">Python • SunPy</span>
+          <div class="chips" aria-label="Keywords">
+            <span class="chip">Plasma Physics</span>
+            <span class="chip">Astrophysics</span>
+            <span class="chip">Computational physics</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- PUBLICATIONS -->
+      <article id="pubs" class="panel">
+        <div class="box">
+          <h2>Publications</h2>
+          <p class="subtitle">Add your papers, talks, posters here.</p>
+
+          <ul class="list">
+            <li><strong>Paper title</strong> — Authors — Journal/Conference, Year. <a href="#">DOI/ADS</a></li>
+            <li><strong>Paper title</strong> — Authors — Journal/Conference, Year. <a href="#">DOI/ADS</a></li>
+          </ul>
+
+          <h2 style="margin-top:22px;">Talks / Posters</h2>
+          <ul class="list">
+            <li><strong>Title</strong> — Event, Year</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- CV -->
+      <article id="cv" class="panel">
+        <div class="box">
+          <h2>CV</h2>
+          <div class="cvActions">
+            <a class="btn primary" href="Panisara_CV_2025.pdf" download>Download PDF</a>
+            <a class="btn" href="Panisara_CV_2025.pdf" target="_blank" rel="noreferrer">Open in new tab</a>
           </div>
 
-          <h3 class="subTitle">Research Interests</h3>
-          <ul>
-            <li>Type III radio bursts: detection, fitting, and cross-spacecraft comparison</li>
-            <li>Fluctuation analysis and smoothing methods</li>
-            <li>Spacecraft connectivity / Parker spiral context</li>
-          </ul>
-
-          <h3 class="subTitle">Life &amp; Lifestyle</h3>
-          <p class="muted">Optional — a few lines only.</p>
-          <ul>
-            <li>Things you enjoy (e.g., travel, writing, games, photography)</li>
-            <li>Anything you’re comfortable sharing publicly</li>
-          </ul>
-
-          <p class="muted">Last updated: <span id="lu"></span></p>
-        </article>
-
-        <!-- TAB 2 -->
-        <article id="pubs" class="panel">
-          <h2 class="sectionTitle">Publications</h2>
-          <p class="muted">Replace these with your real entries.</p>
-
-          <h3 class="subTitle">Journal / Conference</h3>
-          <ul>
-            <li><strong>Paper title</strong> — Authors — Venue, Year. <a href="#">DOI</a></li>
-            <li><strong>Paper title</strong> — Authors — Venue, Year. <a href="#">ADS</a></li>
-          </ul>
-
-          <h3 class="subTitle">Talks / Posters</h3>
-          <ul>
-            <li><strong>Talk title</strong> — Event, Year</li>
-            <li><strong>Poster title</strong> — Event, Year</li>
-          </ul>
-        </article>
-
-        <!-- TAB 3 -->
-        <article id="cv" class="panel">
-          <h2 class="sectionTitle">CV</h2>
-          <p class="muted">
-            Upload your PDF as <code>cv.pdf</code> in the repo root to show it here.
-            <a href="Panisara_CV_2025.pdf" download>Download CV</a>
-
+          <iframe src="Panisara_CV_2025.pdf" title="Panisara Thepthong CV"></iframe>
+          <p style="color:var(--muted); margin-top:10px;">
+            If the PDF doesn’t display on mobile, use “Download PDF”.
           </p>
-          <iframe src="Panisara_CV_2025.pdf" title="CV PDF"></iframe>
-
-        </article>
-      </main>
+        </div>
+      </article>
     </section>
-  </div>
+  </main>
 
   <script>
-    // last updated
-    document.getElementById("lu").textContent = new Date().toISOString().slice(0,10);
+    const buttons = document.querySelectorAll(".nav button");
+    const panels  = document.querySelectorAll(".panel");
 
-    // tab switching without opening new pages
-    const btns = document.querySelectorAll(".tabBtn");
-    const panels = document.querySelectorAll(".panel");
-
-    function setTab(tabId, pushHash=true){
-      btns.forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
-      panels.forEach(p => p.classList.toggle("active", p.id === tabId));
-
-      if (pushHash) history.replaceState(null, "", "#" + tabId);
+    function show(tab, updateHash=true){
+      buttons.forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+      panels.forEach(p => p.classList.toggle("active", p.id === tab));
+      if (updateHash) history.replaceState(null, "", "#" + tab);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    btns.forEach(btn => {
-      btn.addEventListener("click", () => setTab(btn.dataset.tab));
-    });
+    buttons.forEach(btn => btn.addEventListener("click", () => show(btn.dataset.tab)));
 
-    // open correct tab if URL has #about / #pubs / #cv
-    const initial = (location.hash || "#about").replace("#","");
-    if (["about","pubs","cv"].includes(initial)) setTab(initial, false);
+    const initial = (location.hash || "#about").slice(1);
+    if ([...panels].some(p => p.id === initial)) show(initial, false);
   </script>
 </body>
 </html>
