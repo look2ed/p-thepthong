@@ -1,3 +1,355 @@
+:root{
+  --bg:#ffffff;
+  --ink:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --accent:#2563eb;
+  --chip:#f3f4f6;
+  --card:#f5efe9;
+  --shadow: 0 18px 40px rgba(0,0,0,.12);
+  --shadow2: 0 10px 24px rgba(0,0,0,.10);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+}
+
+/* ===== Top bar ===== */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 16px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  min-width: 240px;
+  white-space: nowrap;
+}
+
+.sq{
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.brand b{
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+
+.brand span{
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Nav buttons */
+.nav{
+  display:flex;
+  gap: 18px;
+  align-items:center;
+  flex-wrap: wrap;
+  justify-content:flex-end;
+}
+
+.nav button{
+  appearance:none;
+  border:none;
+  background:transparent;
+  font: inherit;
+  color: var(--ink);
+  padding: 8px 10px;
+  cursor:pointer;
+  border-radius: 999px;
+}
+
+.nav button.active{
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.nav button:hover{
+  background: #f8fafc;
+}
+
+/* ===== Main layout ===== */
+.wrap{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 18px 40px;
+  display:grid;
+  grid-template-columns: 380px 1fr;
+  gap: 34px;
+  align-items:start;
+}
+
+/* Left column stays visible */
+.left{
+  position: sticky;
+  top: 86px;
+  align-self: start;
+}
+
+/* Card stack look */
+.stack{
+  position: relative;
+  width: 100%;
+  padding-top: 18px;
+}
+
+.stack::before{
+  content:"";
+  position:absolute;
+  top: 12px;
+  left: 12px;
+  width: 100%;
+  height: 100%;
+  background: #e9ddd3;
+  border-radius: 14px;
+  box-shadow: var(--shadow2);
+  z-index: 0;
+}
+
+.card{
+  position: relative;
+  z-index: 1;
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 26px 22px 18px;
+  text-align:center;
+}
+
+.avatar{
+  width: 170px;
+  height: 170px;
+  border-radius: 999px;
+  object-fit: cover;
+  background:#ddd;
+  display:block;
+  margin: 0 auto 14px;
+  border: 6px solid rgba(255,255,255,.55);
+}
+
+.name{
+  margin: 0;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.role{
+  margin: 10px 0 0;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.divider{
+  width: 56px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 999px;
+  margin: 12px auto 12px;
+  opacity: .9;
+}
+
+/* Emails under card */
+.emails{
+  margin-top: 14px;
+  padding: 14px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.emails h3{
+  margin: 0 0 10px;
+  font-size: 14px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.emails a{
+  display:block;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  overflow-wrap:anywhere;
+}
+
+.emails a:hover{
+  border-color: var(--line);
+  background:#f9fafb;
+}
+
+/* Bottom icon buttons (ORCID/LinkedIn/GitHub) */
+.iconRow{
+  display:flex;
+  justify-content:center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.iconBtn{
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background:#fff;
+  display:grid;
+  place-items:center;
+  text-decoration:none;
+  color: var(--ink);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+
+.iconBtn:hover{
+  border-color: rgba(37,99,235,.35);
+  box-shadow: 0 8px 18px rgba(37,99,235,.12);
+  transform: translateY(-1px);
+}
+
+/* If you use inline SVG */
+.iconBtn svg{
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* If you use image files (your ORCID/LinkedIn icons) */
+.iconImg{
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display:block;
+}
+
+/* ===== Right panels ===== */
+.panel{ display:none; min-height: 520px; }
+.panel.active{ display:block; }
+
+.title{
+  font-size: 54px;
+  letter-spacing: -0.03em;
+  margin: 22px 0 10px;
+}
+
+.subtitle{
+  font-size: 22px;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+.box{
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 20px;
+  background: #fff;
+}
+
+.box h2{
+  font-size: 24px;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+
+.box p{
+  margin: 0 0 16px;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* keyword blocks */
+.chips{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.chip{
+  background: var(--chip);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.list{
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.list li{
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.cvActions{
+  display:flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 12px 0 14px;
+}
+
+.btn{
+  appearance:none;
+  border: 1px solid var(--line);
+  background:#fff;
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration:none;
+  display:inline-flex;
+  gap: 8px;
+  align-items:center;
+  cursor:pointer;
+  font-weight: 600;
+}
+
+.btn.primary{
+  background: var(--accent);
+  border-color: var(--accent);
+  color:#fff;
+}
+
+.btn:hover{ filter: brightness(0.98); }
+
+iframe{
+  width: 100%;
+  height: min(78vh, 980px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background:#fff;
+}
+
+/* ===== Your contact list block (from your snippet) ===== */
 .contactList{
   list-style:none;
   margin: 0;
@@ -27,9 +379,16 @@
   stroke-linejoin: round;
 }
 
-/* ORCID */
+/* ORCID (for inline SVG version) */
 .contactItem svg.orcid{ stroke:none; fill:#A6CE39; }
 .contactItem svg.orcid text{
   fill:#fff; font-weight:700; font-size:10px;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 980px){
+  .wrap{ grid-template-columns: 1fr; }
+  .left{ position: static; top:auto; }
+  .title{ font-size: 42px; }
 }
