@@ -422,3 +422,76 @@ iframe{
 .talkTitle{ font-size: 16px; margin: 0 0 6px; }
 .talkMeta{ color: var(--muted); font-size: 14px; margin: 2px 0; }
 
+/* CV-style blocks (Education/Experience/Skills layout) */
+.cvEntry{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 22px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.cvEntry:first-of-type{
+  border-top: none;
+  padding-top: 0;
+}
+
+.cvLeft{
+  padding-top: 2px;
+}
+
+.cvDate{
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.cvOrg{
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.cvRole{
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.cvLoc{
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.cvRight p{
+  margin: 0 0 10px;
+  line-height: 1.7;
+}
+
+.cvBullets{
+  margin: 0;
+  padding-left: 18px;
+}
+
+.cvBullets > li{
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.cvBullets ul{
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 980px){
+  .cvEntry{
+    grid-template-columns: 1fr;
+  }
+  .cvDate{
+    margin-bottom: 6px;
+  }
+}
+
