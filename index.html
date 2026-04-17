@@ -85,6 +85,20 @@
             <span class="chip">Computational physics</span>
           </div>
         </div>
+
+        <!-- NEW: Non-academic block under About Me -->
+        <div class="box" style="margin-top:16px;">
+          <h2>Beyond Academia</h2>
+          <p>
+            Besides academic work, I’m a tabletop role-playing game (TRPG) enjoyer. With my small coding experience, I develop
+            tools that help support the Thai TRPG community.
+          </p>
+
+          <div class="pubLinks">
+            <!-- This link will switch to the CV tab + scroll to the Personal Projects section -->
+            <a class="pubLink" href="#cv" data-go="cv" data-scroll="#cv-projects">See Personal Projects</a>
+          </div>
+        </div>
       </article>
 
       <!-- PUBLICATIONS -->
@@ -99,28 +113,28 @@
 
         <div class="box" style="margin-top:16px;">
           <h2>Talks / Posters</h2>
-          <p class="subtitle">Selected presentations (full list are in my CV [PDF]).</p>
+          <p class="subtitle">Selected presentations (full list and details are in my CV PDF).</p>
 
           <div class="talk">
-            <div class="talkTitle"></strong> Characterization of Fluctuations in Solar Type III Radio Spectra Observed by PSP and SolO</div>
+            <div class="talkTitle"><strong>[2025]</strong> Characterization of Fluctuations in Solar Type III Radio Spectra Observed by PSP and SolO</div>
             <div class="talkMeta">Planetary, Solar and Heliospheric Radio Emissions X (PRE X) — Marseille, France</div>
             <div class="talkMeta">Type: Oral Presentation — Jun 2025</div>
           </div>
 
           <div class="talk">
-            <div class="talkTitle"></strong> Joint Analysis of Solar Type III Radio Bursts with Parker Solar Probe and Solar Orbiter</div>
+            <div class="talkTitle"><strong>[2025]</strong> Joint Analysis of Solar Type III Radio Bursts with Parker Solar Probe and Solar Orbiter</div>
             <div class="talkMeta">European Geosciences Union (EGU) General Assembly 2025 — Vienna, Austria</div>
             <div class="talkMeta">Type: Poster Presentation — May 2025</div>
           </div>
 
           <div class="talk">
-            <div class="talkTitle"></strong> Scale and Time Dependence of Alfvénicity in the Solar Wind as Observed by the Parker Solar Probe</div>
+            <div class="talkTitle"><strong>[2023]</strong> Scale and Time Dependence of Alfvénicity in the Solar Wind as Observed by the Parker Solar Probe</div>
             <div class="talkMeta">The 14th International Fundamental Science Congress (IFSC) — Bangkok, Thailand</div>
             <div class="talkMeta">Type: Oral Presentation — Aug 2023</div>
           </div>
 
           <div class="talk">
-            <div class="talkTitle"></strong> Alfvénicity of Velocity and Magnetic-Field Increments during Parker Solar Probe 8th Orbit</div>
+            <div class="talkTitle"><strong>[2022]</strong> Alfvénicity of Velocity and Magnetic-Field Increments during Parker Solar Probe 8th Orbit</div>
             <div class="talkMeta">Second Annual Parker Solar Probe Conference (Parker Two) — Online</div>
             <div class="talkMeta">Type: Poster Presentation — Jun 2022</div>
           </div>
@@ -188,8 +202,7 @@
               <div class="cvRole">School</div>
               <div class="cvLoc">Chiangmai, Thailand</div>
             </div>
-            <div class="cvRight">
-            </div>
+            <div class="cvRight"></div>
           </div>
         </div>
 
@@ -200,7 +213,6 @@
           <div class="cvEntry">
             <div class="cvLeft">
               <div class="cvDate">Teaching Experience</div>
-        
             </div>
             <div class="cvRight">
               <ul class="cvBullets">
@@ -239,7 +251,8 @@
             </div>
           </div>
 
-          <div class="cvEntry">
+          <!-- Personal Projects section (anchor target for About link) -->
+          <div class="cvEntry" id="cv-projects">
             <div class="cvLeft">
               <div class="cvDate">Personal Projects</div>
             </div>
@@ -305,6 +318,24 @@
     }
 
     buttons.forEach(btn => btn.addEventListener("click", () => show(btn.dataset.tab)));
+
+    // allow links like <a data-go="cv" data-scroll="#cv-projects">
+    document.querySelectorAll("[data-go]").forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const tab = link.getAttribute("data-go");
+        const target = link.getAttribute("data-scroll");
+        show(tab);
+
+        if (target) {
+          // wait a tick for the panel to become visible
+          setTimeout(() => {
+            const el = document.querySelector(target);
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 50);
+        }
+      });
+    });
 
     const initial = (location.hash || "#about").slice(1);
     if ([...panels].some(p => p.id === initial)) show(initial, false);
