@@ -86,7 +86,7 @@
           </div>
         </div>
 
-        <!-- NEW: Non-academic block under About Me -->
+        <!-- NEW: Non-academic block -->
         <div class="box" style="margin-top:16px;">
           <h2>Beyond Academia</h2>
           <p>
@@ -95,7 +95,6 @@
           </p>
 
           <div class="pubLinks">
-            <!-- This link will switch to the CV tab + scroll to the Personal Projects section -->
             <a class="pubLink" href="#cv" data-go="cv" data-scroll="#cv-projects">See Personal Projects</a>
           </div>
         </div>
@@ -143,7 +142,7 @@
 
       <!-- CV -->
       <article id="cv" class="panel">
-        <!-- download/open only (no embedded PDF) -->
+        <!-- download/open only -->
         <div class="box">
           <h2>CV</h2>
           <div class="cvActions">
@@ -206,7 +205,7 @@
           </div>
         </div>
 
-        <!-- EXPERIENCE -->
+        <!-- EXPERIENCE (Personal Projects removed from here) -->
         <div class="box" style="margin-top:16px;">
           <h2>Experience</h2>
 
@@ -250,23 +249,49 @@
               </ul>
             </div>
           </div>
+        </div>
 
-          <!-- Personal Projects section (anchor target for About link) -->
-          <div class="cvEntry" id="cv-projects">
+        <!-- PERSONAL PROJECTS (new separate block) -->
+        <div class="box" style="margin-top:16px;" id="cv-projects">
+          <h2>Personal Projects</h2>
+
+          <div class="cvEntry">
             <div class="cvLeft">
-              <div class="cvDate">Personal Projects</div>
+              <div class="cvDate">2025 – Present</div>
+              <div class="cvOrg">Role&Roll Interactive Sheet</div>
+              <div class="cvRole">Web tool</div>
+              <div class="cvLoc">Thai TTRPG support</div>
             </div>
             <div class="cvRight">
-              <ul class="cvBullets">
-                <li><strong>Role &amp; Roll Dice Roller</strong> — 2025–Present
-                  <ul>
-                    <li>
-                      Developed a web-based dice-rolling tool with character sheet support for a Thai tabletop role-playing game (TTRPG) system.
-                      <a href="https://look2ed.github.io/rolenroll_dice/" target="_blank" rel="noreferrer">https://look2ed.github.io/rolenroll_dice/</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <p>
+                Developed a web-based dice-rolling tool with interactive character sheet support for Role&amp;Roll, a Thai tabletop role-playing game (TTRPG) system.
+              </p>
+              <p>
+                <strong>Link:</strong>
+                <a href="https://look2ed.github.io/rolenroll_interactive_sheet/" target="_blank" rel="noreferrer">
+                  https://look2ed.github.io/rolenroll_interactive_sheet/
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div class="cvEntry">
+            <div class="cvLeft">
+              <div class="cvDate">Ongoing</div>
+              <div class="cvOrg">Likith</div>
+              <div class="cvRole">Web-based system</div>
+              <div class="cvLoc">TRPG world-building tool</div>
+            </div>
+            <div class="cvRight">
+              <p>
+                Developed “Likith”, a web-based system as a tool for TRPG game masters during the world builder process.
+              </p>
+              <p>
+                <strong>Link:</strong>
+                <a href="https://github.com/look2ed/Likithyourworld" target="_blank" rel="noreferrer">
+                  https://github.com/look2ed/Likithyourworld
+                </a>
+              </p>
             </div>
           </div>
         </div>
@@ -328,7 +353,6 @@
         show(tab);
 
         if (target) {
-          // wait a tick for the panel to become visible
           setTimeout(() => {
             const el = document.querySelector(target);
             if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
